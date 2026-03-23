@@ -8,7 +8,7 @@ ddos_rps = np.array([3000, 4500, 7200, 8000, 6000, 5500, 4000, 3500]) # atak
 combined = np.concatenate([normal_rps, ddos_rps])
 
 # 2. Funkcja bootstrap CI dla średniej
-def bootstrap_ci(x, stat_func=np.mean, n_bootstrap=5000, alpha=0.01):
+def bootstrap_ci(x, stat_func=np.mean, n_bootstrap=5000, alpha=0.05):
     x = np.asarray(x)
     n = len(x)
     rng = np.random.default_rng(1)
@@ -26,7 +26,7 @@ lower, upper, stats_norm = bootstrap_ci(normal_rps)
 print("Górna granica 95% CI dla średniej normalnego ruchu:", upper)
 
 # 3. Wykrywanie anomalii (wartości > górna granica CI)
-for i, r in enumerate(ddos_rps):
+for i, r in enumerate(combined):
     if r > upper:
         print(f"[ANOMALIA] obserwacja {i+1}: wartość={r}")
     else:

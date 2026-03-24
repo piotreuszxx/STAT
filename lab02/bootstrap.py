@@ -26,7 +26,7 @@ lower, upper, stats_norm = bootstrap_ci(normal_rps)
 print("Górna granica 95% CI dla średniej normalnego ruchu:", upper)
 
 # 3. Wykrywanie anomalii (wartości > górna granica CI)
-for i, r in enumerate(combined):
+for i, r in enumerate(ddos_rps):
     if r > upper:
         print(f"[ANOMALIA] obserwacja {i+1}: wartość={r}")
     else:

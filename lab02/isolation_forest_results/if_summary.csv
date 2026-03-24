@@ -1,0 +1,13 @@
+experiment,param,num_anomalies,anomaly_indices,notes
+contamination,0.01,4,362 363 364 365,trained on whole combined
+contamination,0.05,19,12 138 159 211 219 238 247 259 270 284 303 360 361 362 363 364 365 366 367,trained on whole combined
+contamination,0.1,37,12 47 48 62 69 74 79 89 108 138 146 159 164 178 190 211 219 221 236 238 244 247 259 270 284 303 339 348 351 360 361 362 363 364 365 366 367,trained on whole combined
+contamination,0.2,74,12 39 41 46 47 48 62 66 69 74 79 87 89 91 99 101 108 116 119 123 126 136 137 138 146 149 155 159 164 167 168 176 178 187 190 192 195 202 209 211 219 221 231 232 233 236 238 244 247 259 268 270 279 284 291 300 303 331 338 339 342 345 348 350 351 354 360 361 362 363 364 365 366 367,trained on whole combined
+trained_on_normal,0.05,26,12 47 69 79 108 138 159 211 219 221 236 238 247 259 270 284 303 351 360 361 362 363 364 365 366 367,model trained on normal_X
+attack_scores_mean,,-0.2265815183852617,,mean decision score on attack segment
+stability_consistent,"n=50,max_samples=0.5",16,138 159 219 238 247 270 284 303 360 361 362 363 364 365 366 367,indices detected as anomaly in all 10 runs
+stability_consistent,"n=50,max_samples=1.0",17,159 211 219 238 247 259 270 284 303 360 361 362 363 364 365 366 367,indices detected as anomaly in all 10 runs
+stability_consistent,"n=100,max_samples=0.5",19,12 138 159 211 219 238 247 259 270 284 303 360 361 362 363 364 365 366 367,indices detected as anomaly in all 10 runs
+stability_consistent,"n=100,max_samples=1.0",17,159 211 219 238 247 259 270 284 303 360 361 362 363 364 365 366 367,indices detected as anomaly in all 10 runs
+stability_consistent,"n=200,max_samples=0.5",19,12 138 159 211 219 238 247 259 270 284 303 360 361 362 363 364 365 366 367,indices detected as anomaly in all 10 runs
+stability_consistent,"n=200,max_samples=1.0",17,159 211 219 238 247 259 270 284 303 360 361 362 363 364 365 366 367,indices detected as anomaly in all 10 runs

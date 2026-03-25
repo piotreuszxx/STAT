@@ -1,0 +1,7 @@
+experiment,scaled,IsolationForest,LOF,OneClassSVM
+attack_avgbytes_similar,False,1.0,0.2,0.2772277227722772
+attack_avgbytes_similar,True,1.0,0.06,0.5098039215686274
+base,False,1.0,0.24,0.5050505050505051
+base,True,1.0,0.1,0.673469387755102
+imbalance_stronger,False,1.0,1.0,0.4210526315789473
+imbalance_stronger,True,1.0,1.0,0.2857142857142857

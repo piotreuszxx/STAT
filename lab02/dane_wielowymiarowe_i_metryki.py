@@ -153,13 +153,13 @@ for name, n_normal, n_attack, avg_bytes_loc, err_low, err_high in experiments:
     plt.savefig(out_dir / f'f1_{name}_scaled.png')
     plt.close()
 
-# Zapis CSV
-csv_path = out_dir / 'dane_wielowymiarowe_metrics.csv'
-with open(csv_path, 'w', newline='', encoding='utf-8') as f:
-    fieldnames = ['experiment','scaled','n_normal','n_attack','model','precision','recall','f1']
-    writer = csv.DictWriter(f, fieldnames=fieldnames)
-    writer.writeheader()
-    for row in csv_rows:
-        writer.writerow(row)
+# # Zapis CSV
+# csv_path = out_dir / 'dane_wielowymiarowe_metrics.csv'
+# with open(csv_path, 'w', newline='', encoding='utf-8') as f:
+#     fieldnames = ['experiment','scaled','n_normal','n_attack','model','precision','recall','f1']
+#     writer = csv.DictWriter(f, fieldnames=fieldnames)
+#     writer.writeheader()
+#     for row in csv_rows:
+#         writer.writerow(row)
 
-print('Eksperymenty zakończone. Wyniki zapisane w:', out_dir)
+# print('Eksperymenty zakończone. Wyniki zapisane w:', out_dir)

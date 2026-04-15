@@ -1,0 +1,47 @@
+Zadanie 1
+Uruchom przykładowy kod oraz udziel odpowiedzi i uzasadnij.
+1. Interpretacja modelu
+1.1 Co oznacza wartość współczynnika β1 w tym modelu?
+1.2 Jak interpretować wyraz wolny β0 w kontekście danych o rachunkach i
+napiwkach?
+1.3 Czy wyraz wolny β0 ma w tym przypadku sens praktyczny? Dlaczego
+tak/nie?
+2 Statystyki dopasowania
+2.1 Jak interpretować wartość R² otrzymaną w podsumowaniu modelu?
+2.2 Co oznacza wysoka wartość p-value przy danym współczynniku?
+2.3 Jakie wnioski można wyciągnąć, jeśli test F wskazuje na istotność całego
+modelu?
+3 Reszty i diagnostyka
+3.1 Jak sprawdzić, czy reszty mają rozkład normalny w tym przykładzie?
+3.2 Co by oznaczało, gdyby reszty układały się w „kształt lejka” na wykresie
+reszt względem wartości dopasowanych?
+3.3 Jakie wnioski można wyciągnąć, jeśli QQ-plot reszt znacząco odbiega od
+linii 45°?
+4 Rozszerzenie modelu
+4.1 Jak zmieniłby się model, gdybyśmy uwzględnili także zmienną size
+(liczbę osób przy stoliku)?
+4.2 Jak można uwzględnić zmienne kategoryczne, takie jak day lub time, w
+modelu regresji liniowej?
+4.3 Czy włączenie dodatkowych zmiennych zawsze poprawia dopasowanie
+modelu? Uzasadnij.
+5 Praktyczne aspekty
+5.1 Jak można wykorzystać taki model w praktyce np. w restauracji?
+5.2 Jakie ograniczenia ma ten model (tylko tip ~ total_bill)?
+5.3 Jakie inne czynniki mogłyby wpływać na wysokość napiwku, a nie są
+ujęte w tym modelu?
+Zadanie 2
+Z dostępnych bibliotek wybierz zbiór danych i przetwórz z użyciem regresji prostej.
+Przykładowe dane:
+Zbiory z seaborn:
+ diamonds – dane o diamentach (cena, karaty, czystość, kolor, szlif). Można badać
+np. zależność ceny od masy (carat).
+ mpg – dane o samochodach (zużycie paliwa, moc, cylindry). Model: zużycie paliwa
+(mpg) zależy od mocy (horsepower) i wagi (weight).
+Zbiory z sklearn.datasets:
+ diabetes – dane medyczne (10 zmiennych opisujących pacjentów, np. wiek, BMI).
+Klasyczny przykład regresji liniowej: przewidywanie poziomu cukru we krwi.
+Zbiory ekonomiczne i społeczne (dostępne np. w statsmodels):
+ longley – klasyczny zbiór do regresji wielorakiej: zatrudnienie w USA vs czynniki
+ekonomiczne.
+ anscombe – zestaw danych ilustrujący, że różne rozkłady punktów mogą dawać
+identyczne parametry regresji.

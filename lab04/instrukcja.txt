@@ -1,0 +1,85 @@
+Ćwiczenie laboratoryjne: Regresja wieloraka na przykładzie zbioru Energy
+Efficiency
+Cel ćwiczenia
+Celem zajęć jest praktyczne zapoznanie studentów z metodą regresji wielorakiej w analizie
+danych inżynierskich. Na podstawie rzeczywistych danych symulacyjnych zostanie
+zbudowany model przewidujący zapotrzebowanie na energię cieplną i chłodzenie
+budynków w zależności od ich parametrów konstrukcyjnych.
+Zakres tematyczny
+• przypomnienie pojęcia regresji liniowej i wielorakiej,
+• wczytanie i przygotowanie danych,
+• budowa modelu regresji wielorakiej,
+• ocena dopasowania modelu (R², RMSE, analiza reszt),
+• interpretacja współczynników regresji,
+• dyskusja nad zastosowaniami praktycznymi i ograniczeniami modelu.
+Wprowadzenie teoretyczne
+Regresja wieloraka to metoda statystyczna umożliwiająca modelowanie zależności między
+zmienną zależną Y a wieloma zmiennymi niezależnymi X1, X2, ..., Xk. Ogólna postać modelu:
+Y = β₀ + β₁X₁ + β₂X₂ + ... + βₖXₖ + ε
+gdzie Y to zmienna objaśniana, Xi to zmienne objaśniające, βi to współczynniki regresji, a ε
+to składnik losowy. Model umożliwia ocenę siły i kierunku wpływu każdej zmiennej na
+wynik oraz prognozowanie wartości Y.
+Opis danych: Energy Efficiency Dataset
+Zbiór Energy Efficiency pochodzi z repozytorium UCI Machine Learning Repository i
+zawiera dane dotyczące budynków o różnych parametrach konstrukcyjnych i ich
+efektywności energetycznej.
+Zmienna Opis Typ
+Relative Compactness zwartość budynku ciągła
+Surface Area całkowita powierzchnia
+zewnętrzna
+ciągła
+Wall Area powierzchnia ścian ciągła
+Roof Area powierzchnia dachu ciągła
+Overall Height wysokość budynku ciągła
+Orientation kierunek ustawienia kategoryczna
+Glazing Area procent powierzchni
+przeszkleń
+ciągła
+Glazing Area Distribution rozmieszczenie okien kategoryczna
+Zmiennymi zależnymi są: Heating Load (zapotrzebowanie na ogrzewanie) oraz Cooling
+Load (zapotrzebowanie na chłodzenie).
+Przebieg ćwiczenia
+1. Wczytanie danych:
+import pandas as pd
+url = "https://archive.ics.uci.edu/ml/machine-learning-
+databases/00242/ENB2012_data.xlsx"
+df = pd.read_excel(url)
+df.columns = [
+'RelativeCompactness', 'SurfaceArea', 'WallArea', 'RoofArea',
+'OverallHeight', 'Orientation', 'GlazingArea',
+'GlazingAreaDistribution',
+'HeatingLoad', 'CoolingLoad'
+]
+print(df.head())
+2. Budowa modelu regresji wielorakiej:
+import statsmodels.api as sm
+X = df[['RelativeCompactness', 'SurfaceArea', 'WallArea',
+'RoofArea',
+'OverallHeight', 'Orientation', 'GlazingArea',
+'GlazingAreaDistribution']]
+y = df['HeatingLoad']
+X = sm.add_constant(X)
+model = sm.OLS(y, X).fit()
+print(model.summary())
+3. Ocena dopasowania modelu i analiza reszt:
+import matplotlib.pyplot as plt
+y_pred = model.predict(X)
+residuals = y - y_pred
+plt.scatter(y_pred, residuals)
+plt.axhline(0, color='red', linestyle='--')
+plt.xlabel("Wartości przewidywane")
+plt.ylabel("Reszty")
+plt.title("Analiza reszt modelu")
+plt.show()
+Pytania kontrolne
+1. Co oznacza wysoka wartość współczynnika R²?
+2. Jak interpretować ujemny współczynnik przy zmiennej RelativeCompactness?
+3. Dlaczego warto analizować reszty modelu?
+4. W jaki sposób można rozszerzyć analizę, aby objąć zmienną Cooling Load?
+5. Jakie ograniczenia ma model regresji wielorakiej w tym przypadku?
+Wnioski
+Po wykonaniu ćwiczenia student powinien umieć:
+• zbudować model regresji wielorakiej,
+• ocenić jego dopasowanie i interpretować współczynniki,
+• rozumieć wpływ cech konstrukcyjnych na efektywność energetyczną,
+• wskazać ograniczenia modelu i możliwe kierunki jego ulepszenia.

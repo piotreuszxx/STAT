@@ -1,0 +1,106 @@
+Do czego służy regresja logistyczna?
+Regresja logistyczna to metoda statystyczna służąca do oceny wpływu wielu czynników
+(zmiennych niezależnych, inaczej objaśniających) na prawdopodobieństwo wystąpienia
+określonego zdarzenia. Przykładami mogą być:
+• prawdopodobieństwo zachorowania na chorobę,
+• szansa terminowej spłaty kredytu,
+• prawdopodobieństwo zakupu produktu przez klienta.
+Szansa, prawdopodobieństwo i ryzyko – wyjaśnienie pojęć
+Zanim przejdziemy do samej regresji, warto uporządkować znaczenie trzech pokrewnych
+terminów: prawdopodobieństwo, szansa i ryzyko.
+Prawdopodobieństwo
+To stosunek liczby przypadków sprzyjających danemu zdarzeniu do liczby wszystkich
+możliwych przypadków. Przykład: jeśli w pudełku znajdują się trzy białe i jedna czarna
+kulka, to prawdopodobieństwo wylosowania czarnej wynosi:
+P = 1 / 4 = 0,25
+Szansa (odds)
+Szansa to stosunek liczby przypadków sprzyjających danemu zdarzeniu do liczby
+przypadków, które mu nie sprzyjają. W tym samym przykładzie szansa wylosowania
+czarnej kulki wynosi:
+odds = 1 / 3 ≈ 0,33
+Widzimy więc, że „prawdopodobieństwo” i „szansa” to różne pojęcia — choć w języku
+potocznym często używamy ich zamiennie.
+Ryzyko
+Słowo „ryzyko” w języku codziennym oznacza możliwość wystąpienia zdarzenia
+niekorzystnego, np. „ryzyko zgonu”. W statystyce jednak pojęcie to jest często utożsamiane
+z prawdopodobieństwem niekorzystnego zdarzenia. Dlatego, aby uniknąć
+niejednoznaczności, w kontekście regresji logistycznej lepiej mówić o szansach (odds) niż o
+ryzyku.
+Podsumowanie
+Regresja logistyczna pozwala na ilościową ocenę, w jakim stopniu poszczególne zmienne
+(np. wiek, płeć, styl życia) wpływają na szanse wystąpienia zdarzenia. Dzięki temu możemy
+modelować i przewidywać zjawiska o charakterze zero-jedynkowym, takie jak „choroba –
+brak choroby” lub „zakup – brak zakupu”.
+Omówienie przykładu regresji
+logistycznej (jednowymiarowej)
+W poniższym omówieniu przedstawiono działanie kodu implementującego regresję
+logistyczną dla jednej zmiennej objaśniającej (wiek) oraz interpretację współczynników i
+wyniku predykcji.
+Kod programu
+import pandas as pd
+import math
+from sklearn.linear_model import LogisticRegression
+from platform import python_version
+from sklearn import __version__ as sklearn_ver
+from statsmodels import __version__ as statsmodels_ver
+print(f'python: {python_version()}')
+print(f'\npandas: {pd.__version__}')
+print(f'sklearn: {sklearn_ver}')
+print(f'statsmodels: {statsmodels_ver}')
+df = pd.read_excel('data.xlsx')
+df.head(3)
+X = df[['age']]
+y = df['target']
+model = LogisticRegression()
+model.fit(X, y)
+# probability of death
+age_to_predict = 30
+model.predict_proba([[age_to_predict]])[:,1]
+theta0 = model.intercept_[0]
+theta1 = model.coef_[0][0]
+print(f'theta1={round(theta1,3)}; theta0 ={round(theta0,3)}')
+# probability of death from math formula
+round(1/(1+math.exp(-(age_to_predict*theta1+theta0))),8)
+1. Opis działania kodu
+Skrypt wczytuje dane z pliku Excel (`data.xlsx`), gdzie kolumna `age` reprezentuje wiek, a
+kolumna `target` to zmienna binarna (np. 1 – zgon, 0 – przeżycie). Następnie tworzy model
+regresji logistycznej z pakietu scikit-learn i uczy go zależności pomiędzy wiekiem a
+prawdopodobieństwem zdarzenia.
+Po nauczeniu modelu, wykonywana jest predykcja dla przykładowego wieku (30 lat), a
+następnie obliczane są współczynniki: θ₀ (intercept) oraz θ₁ (nachylenie). Wynik
+`predict_proba` odpowiada wartości funkcji sigmoidalnej:
+p(x) = 1 / (1 + e^{-(θ₀ + θ₁·x)})
+2. Interpretacja współczynników
+• θ₁ – oznacza przyrost log-ilorazu szans (log-odds) dla wzrostu wieku o 1 jednostkę (rok).
+Jeśli e^{θ₁} > 1, starszy wiek zwiększa szanse zdarzenia; jeśli < 1, zmniejsza.
+• θ₀ – ustala punkt przecięcia (wartość logitu dla wieku = 0), przesuwając krzywą
+sigmoidalną na osi x.
+Model uczy zależność typu:
+log(p/(1−p)) = θ₀ + θ₁·age
+czyli liniową relację pomiędzy logarytmem ilorazu szans a wiekiem.
+3. Obliczanie ręczne
+Zastosowanie funkcji `math.exp` i wzoru na sigmoidalną pozwala ręcznie odtworzyć wynik
+predykcji `predict_proba`. Obie metody – modelowa i matematyczna – powinny dawać
+identyczne rezultaty po zaokrągleniu.
+4. Uwagi praktyczne
+• Przy wielu zmiennych lub dużej skali warto dodać standaryzację (StandardScaler).
+• Domyślnie regresja w scikit-learn używa regularyzacji L2; do czystego MLE można użyć
+`penalty='none'` lub pakietu `statsmodels`.
+• Dla danych niezbalansowanych warto ustawić `class_weight='balanced'`.
+• Model logistyczny jest probabilistyczny – należy oceniać jego kalibrację i miary takie jak
+AUC-ROC, AUC-PR, Brier score.
+5. Rozszerzenie – przykład obliczeń
+Przykład dodatkowego kodu do oceny modelu:
+import numpy as np, math
+from sklearn.metrics import roc_auc_score, brier_score_loss
+p = model.predict_proba(X)[:,1]
+print("AUC:", roc_auc_score(y, p))
+print("Brier:", brier_score_loss(y, p))
+print("OR (per year):", math.exp(theta1))
+age50_p = 1/(1+math.exp(-(theta0+theta1*50)))
+print("P(Y=1 | age=50):", age50_p)
+6. Podsumowanie
+Kod pokazuje, jak na prostym przykładzie jednowymiarowym zweryfikować równanie
+regresji logistycznej. Funkcja `predict_proba` i wzór matematyczny sigmoidy zwracają te
+same wartości. Parametr θ₁ określa kierunek i siłę wpływu wieku na prawdopodobieństwo
+zdarzenia, a e^{θ₁} interpretujemy jako zmianę ilorazu szans dla wzrostu wieku o 1 rok.

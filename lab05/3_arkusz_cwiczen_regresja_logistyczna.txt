@@ -1,0 +1,59 @@
+Arkusz ćwiczeniowy – Regresja
+logistyczna
+Celem tego ćwiczenia jest praktyczne zrozumienie działania regresji logistycznej,
+interpretacja współczynników modelu oraz weryfikacja wyników predykcji w języku
+Python.
+Część I – Pytania kontrolne
+Odpowiedz na poniższe pytania dotyczące zasad działania regresji logistycznej. Każde
+pytanie może mieć charakter opisowy lub wymagający interpretacji wyników modelu.
+1. 1. Na czym polega podstawowa różnica między regresją liniową a logistyczną?
+Odpowiedź: ....................................................................................
+2. 2. Co oznacza wartość funkcji sigmoidalnej w regresji logistycznej?
+Odpowiedź: ....................................................................................
+3. 3. Jak interpretujemy współczynniki θ₀ (intercept) oraz θ₁ (nachylenie)?
+Odpowiedź: ....................................................................................
+4. 4. Co przedstawia logit i jaka jest jego zależność z prawdopodobieństwem zdarzenia?
+Odpowiedź: ....................................................................................
+5. 5. Jakie znaczenie ma iloraz szans (odds ratio) i jak go obliczamy z wyniku modelu?
+Odpowiedź: ....................................................................................
+6. 6. Czym jest miara AUC-ROC i co informuje o jakości klasyfikacji?
+Odpowiedź: ....................................................................................
+7. 7. Dlaczego w regresji logistycznej warto stosować standaryzację danych wejściowych?
+Odpowiedź: ....................................................................................
+8. 8. W jaki sposób można ocenić kalibrację modelu probabilistycznego?
+Odpowiedź: ....................................................................................
+Część II – Ćwiczenia praktyczne w Pythonie
+Wykonaj poniższe polecenia w środowisku Python (np. Jupyter Notebook, Spyder, VS Code).
+Użyj danych `data.xlsx`, w których kolumna `age` zawiera wiek, a kolumna `target` –
+zmienną binarną (np. 0 – przeżycie, 1 – zgon).
+9. 1. Wczytaj dane z pliku `data.xlsx` i wyświetl pierwsze 5 wierszy.
+Miejsce na wynik / kod / wykres:
+10. 2. Zbuduj model regresji logistycznej z wykorzystaniem
+`sklearn.linear_model.LogisticRegression`.
+Miejsce na wynik / kod / wykres:
+11. 3. Naucz model na podstawie zmiennej `age` i celu `target`.
+Miejsce na wynik / kod / wykres:
+12. 4. Odczytaj współczynniki modelu: `intercept_` i `coef_`.
+Miejsce na wynik / kod / wykres:
+13. 5. Oblicz prawdopodobieństwo zdarzenia dla wieku = 30 lat, używając `predict_proba()`.
+Miejsce na wynik / kod / wykres:
+14. 6. Zastosuj wzór matematyczny sigmoidy i porównaj wynik z `predict_proba()`.
+Miejsce na wynik / kod / wykres:
+15. 7. Oblicz miary jakości modelu: AUC i Brier Score.
+Miejsce na wynik / kod / wykres:
+16. 8. Narysuj wykres funkcji sigmoidalnej oraz zaznacz na nim punkty dla kilku wybranych
+wartości wieku (np. 20, 30, 40, 50, 60).
+Miejsce na wynik / kod / wykres:
+17. 9. Zinterpretuj wykres – w jaki sposób zmiana wieku wpływa na prawdopodobieństwo
+zdarzenia?
+Miejsce na wynik / kod / wykres:
+Część III – Analiza wyników i wnioski
+Na podstawie otrzymanych wyników odpowiedz na poniższe pytania:
+• Jak zmienia się prawdopodobieństwo zdarzenia wraz z wiekiem?
+• Czy współczynnik θ₁ jest dodatni czy ujemny i co to oznacza?
+• Czy model jest dobrze dopasowany do danych? Jakie wnioski można wyciągnąć z wartości
+AUC?
+• Jakie są ograniczenia tego modelu w kontekście prognozowania?
+Wnioski:
+.....................................................................................
+.....................................................................................

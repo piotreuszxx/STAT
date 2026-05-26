@@ -1,0 +1,93 @@
+Propozycje zbiorów danych do regresji
+logistycznej
+Poniżej przedstawiono zestaw przykładowych zbiorów danych, które można wykorzystać
+do realizacji ćwiczeń z regresji logistycznej – zarówno prostych, jak i zaawansowanych.
+Zbiory podzielono na trzy grupy: wbudowane, publiczne oraz domenowe.
+1. Wbudowane zbiory danych (scikit-learn, seaborn)
+Nazwa Liczba klas Opis Import / źródło
+Breast Cancer 2 Diagnoza guza
+piersi (łagodny /
+złośliwy).
+from sklearn.datasets
+import
+load_breast_cancer
+Iris 3 Klasyfikacja
+gatunków irysa.
+from sklearn.datasets
+import load_iris
+Wine 3 Klasyfikacja win na
+podstawie składu
+chemicznego.
+from sklearn.datasets
+import load_wine
+Digits 10 Klasyfikacja cyfr 0–
+9 (można uprościć
+do binarnej).
+from sklearn.datasets
+import load_digits
+Titanic 2 Przeżycie
+pasażerów Titanica
+(regresja
+logistyczna).
+sns.load_dataset('titanic')
+2. Publicznie dostępne zbiory danych (UCI, Kaggle, OpenML)
+Nazwa Źródło / link Opis
+Pima
+Indians
+Diabetes
+https://archive.ics.uci.edu/ml/datasets/pima+indians+diab
+etes
+Cukrzyca u
+kobiet z
+plemienia
+Pima –
+klasyczny
+benchmark.
+Heart
+Disease
+https://www.kaggle.com/ronitf/heart-disease-uci Ryzyko
+choroby serca
+– dane
+medyczne.
+Bank
+Marketing
+https://archive.ics.uci.edu/ml/datasets/bank+marketing Czy klient
+banku zgodzi
+się na depozyt
+terminowy.
+Adult
+(Census
+Income)
+https://archive.ics.uci.edu/ml/datasets/adult Czy osoba
+zarabia
+>50K$/rok –
+klasyka ML.
+Student
+Performanc
+e
+https://archive.ics.uci.edu/ml/datasets/student+performan
+ce
+Wyniki
+uczniów a
+czynniki
+społeczne.
+Credit
+Default
+https://www.kaggle.com/uciml/default-of-credit-card-
+clients-dataset
+Przewidywani
+e spłaty
+kredytu.
+3. Zbiory domenowe (większe, realistyczne dane)
+Nazwa Dziedzina Cel / zastosowanie
+Churn Prediction (Telco) Marketing / CRM Czy klient odejdzie z usługi.
+Fraud Detection Finanse Wykrywanie oszustw
+płatniczych.
+Loan Default Bankowość Czy klient spłaci kredyt.
+Medical Diagnosis Medycyna Klasyfikacja pacjentów:
+chory / zdrowy.
+Wskazówki:
+• Upewnij się, że zmienna docelowa jest binarna (0/1).
+• Przeskaluj cechy numeryczne (`StandardScaler`).
+• Sprawdź brakujące wartości i współliniowość.
+• Dla klas niezbalansowanych stosuj `class_weight='balanced'` lub SMOTE.

@@ -1,0 +1,134 @@
+Zadanie: Regresja logistyczna –
+prawdopodobieństwo, szansa (odds) i
+kalibracja
+Celem zadania jest praktyczne zrozumienie regresji logistycznej oraz różnicy między
+prawdopodobieństwem, szansą (odds) i logitem. W ćwiczeniu zbudujesz model klasyfikacji
+binarnej, zbadacie jego skuteczność, skalibrujecie predykcje i zinterpretujecie
+współczynniki w kategoriach ilorazów szans.
+1. Dane i przygotowanie
+Użyj wbudowanego zbioru danych `breast_cancer` z pakietu scikit-learn. Podziel dane na
+zbiór uczący i testowy (75%–25%) z zachowaniem proporcji klas. Następnie zbuduj
+pipeline złożony z:
+• standaryzacji (`StandardScaler`),
+• modelu `LogisticRegression` z wagami klas (balanced), solverem `lbfgs`, `max_iter=500`.
+Zapisz przewidywane prawdopodobieństwa dla zbioru testowego.
+*Miejsce na kod i komentarz:*
+2. Prawdopodobieństwo, szansa (odds) i logit
+Policz dla kilku obserwacji:
+• prawdopodobieństwo: p,
+• szansę (odds): p / (1 - p),
+• logit: log(p / (1 - p)).
+Porównaj wartości i opisz zależność między nimi.
+*Miejsce na tabelę / zrzut wyników:*
+3. Ocena jakości modelu
+Oceń model przy użyciu następujących miar:
+• AUC-ROC,
+• AUC-PR,
+• Brier score.
+Zinterpretuj wartości – co oznacza wysoka lub niska wartość każdej z metryk.
+*Miejsce na wyniki metryk:*
+4. Kalibracja modelu
+Porównaj model bazowy (nieskalibrowany) z modelami skalibrowanymi metodami:
+• Platta (sigmoid),
+• Izotoniczną.
+Dla każdego modelu oblicz Brier score i narysuj krzywe kalibracji (reliability plot).
+*Miejsce na wykres kalibracji:*
+5. Dobór progu decyzyjnego
+Użyj krzywej ROC i wskaźnika Youdena (TPR - FPR), aby znaleźć optymalny próg
+klasyfikacji. Dla tego progu przedstaw macierz pomyłek i opisz wnioski (czy model częściej
+popełnia błędy typu I czy II).
+*Miejsce na macierz pomyłek i interpretację:*
+6. Interpretacja współczynników
+Wyświetl współczynniki regresji β oraz oblicz ilorazy szans e^{β}. Zidentyfikuj 5 cech o
+największym wpływie na decyzję modelu i opisz ich interpretację.
+*Miejsce na tabelę współczynników:*
+7. Wnioski końcowe
+Podsumuj obserwacje:
+• Czy model był dobrze skalibrowany?
+• Jakie cechy miały największy wpływ?
+• Czy wybrany próg poprawił wyniki klasyfikacji?
+• Jak rozumiesz różnicę między prawdopodobieństwem, szansą i logitem?
+*Miejsce na podsumowanie:*
+Załącznik: szkic kodu (Python, scikit-learn)
+Poniższy kod realizuje kolejne kroki zadania: przygotowanie danych, model bazowy,
+kalibracja (Platt, izotoniczna), metryki, krzywe kalibracji oraz dobór progu Youdena.
+Skopiuj do notatnika Jupyter lub pliku .py i uruchom.
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_breast_cancer
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+from sklearn.linear_model import LogisticRegression
+from sklearn.calibration import CalibratedClassifierCV,
+calibration_curve
+from sklearn.metrics import (roc_auc_score,
+average_precision_score,
+brier_score_loss, confusion_matrix,
+roc_curve)
+# 1) Dane
+X, y = load_breast_cancer(return_X_y=True, as_frame=True)
+# 2) Podział
+Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.25,
+stratify=y, random_state=42)
+# 3) Pipeline: standaryzacja + LR (L2)
+base = Pipeline([
+("sc", StandardScaler()),
+("lr", LogisticRegression(max_iter=500,
+class_weight="balanced", solver="lbfgs"))
+])
+base.fit(Xtr, ytr)
+p_base = base.predict_proba(Xte)[:, 1] # prawdopodobieństwa p
+# 4) Prawdopodobieństwo vs. szansa vs. logit
+def odds(p): return p / (1 - p)
+def logit(p): return np.log(p / (1 - p))
+ex = pd.DataFrame({"p": p_base[:5],
+"odds": odds(p_base[:5]),
+"logit": logit(p_base[:5])})
+print("\nProb/odds/logit (pierwsze 5):\n", ex.round(4))
+# 5) Metryki bazowe
+auc = roc_auc_score(yte, p_base)
+apr = average_precision_score(yte, p_base)
+brier = brier_score_loss(yte, p_base)
+print(f"\nBazowo: AUC-ROC={auc:.3f} AUC-PR={apr:.3f}
+Brier={brier:.3f}")
+# 6) Kalibracja: Platt i izotoniczna
+platt = CalibratedClassifierCV(base, method="sigmoid",
+cv=5).fit(Xtr, ytr)
+iso = CalibratedClassifierCV(base, method="isotonic",
+cv=5).fit(Xtr, ytr)
+p_platt = platt.predict_proba(Xte)[:, 1]
+p_iso = iso.predict_proba(Xte)[:, 1]
+print("Platt Brier:", brier_score_loss(yte, p_platt))
+print("Iso Brier:", brier_score_loss(yte, p_iso))
+# 7) Krzywe kalibracji
+fig, ax = plt.subplots(figsize=(6,4))
+for name, p in [("NoCal", p_base), ("Platt", p_platt),
+("Isotonic", p_iso)]:
+frac_pos, mean_pred = calibration_curve(yte, p, n_bins=10,
+strategy='quantile')
+ax.plot(mean_pred, frac_pos, marker='o', label=name)
+ax.plot([0,1],[0,1],'k--',lw=1)
+ax.set_xlabel("Prognozowane p")
+ax.set_ylabel("Częstość rzeczywista")
+ax.set_title("Kalibracja (reliability plot)")
+ax.legend(); plt.tight_layout(); plt.show()
+# 8) Próg decyzyjny (Youden) – na izotonicznie skalibrowanym
+wariancie
+fpr, tpr, thr = roc_curve(yte, p_iso)
+best_idx = np.argmax(tpr - fpr)
+thr_best = thr[best_idx]
+print(f"Próg Youdena: {thr_best:.3f} (TPR={tpr[best_idx]:.3f},
+FPR={fpr[best_idx]:.3f})")
+yhat = (p_iso >= thr_best).astype(int)
+print("Macierz pomyłek @Youden:\n", confusion_matrix(yte, yhat))
+# 9) Współczynniki i OR
+lr = base.named_steps["lr"]
+coefs = lr.coef_.ravel()
+or_df = pd.DataFrame({
+"cecha": X.columns,
+"beta": coefs,
+"odds_ratio": np.exp(coefs)
+}).sort_values("odds_ratio", ascending=False)
+print("\nTop ilorazy szans:\n", or_df.head(10).round(3))
